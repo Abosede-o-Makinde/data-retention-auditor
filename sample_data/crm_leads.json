@@ -1,0 +1,77 @@
+{
+  "schema_id": "CRM-001",
+  "system": "Harbour Sales CRM",
+  "organisation": "Harbour Advisory LLP",
+  "schema_version": "1.0",
+  "notes": "Worked FAIL example. Marketing and sales data with missing or vague retention metadata.",
+  "entities": [
+    {
+      "name": "leads",
+      "description": "Inbound sales leads captured from the website and events",
+      "fields": [
+        {
+          "name": "lead_id",
+          "personal_data": false,
+          "category": "internal identifier",
+          "purpose": "Primary key",
+          "retention_period": "",
+          "trigger": "",
+          "disposal": "",
+          "deletion_job": null,
+          "erasure_supported": null,
+          "art89_exception": false,
+          "ropa_activity_id": null,
+          "notes": "Not personal data — ignored by retention scoring"
+        },
+        {
+          "name": "email",
+          "personal_data": true,
+          "category": "contact",
+          "purpose": "Contact the lead about advisory services",
+          "retention_period": "",
+          "trigger": "",
+          "disposal": "",
+          "deletion_job": false,
+          "erasure_supported": false,
+          "art89_exception": false,
+          "ropa_activity_id": null,
+          "notes": "No retention period declared"
+        },
+        {
+          "name": "source_notes",
+          "personal_data": true,
+          "category": "free text",
+          "purpose": "Record how the lead was acquired",
+          "retention_period": "as per policy",
+          "trigger": "",
+          "disposal": "",
+          "deletion_job": false,
+          "erasure_supported": false,
+          "art89_exception": false,
+          "ropa_activity_id": null,
+          "notes": "Vague pointer to a policy is not a period"
+        }
+      ]
+    },
+    {
+      "name": "session_replays",
+      "description": "Website session recordings used by the sales team",
+      "fields": [
+        {
+          "name": "blob",
+          "personal_data": true,
+          "category": "behavioural",
+          "purpose": "Replay browsing sessions to improve conversion",
+          "retention_period": "30 days",
+          "trigger": "",
+          "disposal": "erase",
+          "deletion_job": false,
+          "erasure_supported": false,
+          "art89_exception": false,
+          "ropa_activity_id": null,
+          "notes": "Period stated but no deletion job and no trigger event"
+        }
+      ]
+    }
+  ]
+}
