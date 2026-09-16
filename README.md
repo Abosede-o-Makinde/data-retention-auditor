@@ -6,7 +6,12 @@
 
 Scans data schemas for missing retention periods under UK GDPR Articles 5(1)(e), 17 and 30.
 
-This repository is a scaffold. The scanner, reports, and sample schemas are not implemented yet.
+This repository is a scaffold. The scanner and reports are not implemented yet.
+
+JSON schema inventories live in `sample_data/`:
+
+- `crm_leads.json` — sales CRM with missing and vague retention metadata
+- `hr_employees.json` — HR records with period, trigger, disposal, and a ROPA link
 
 ## Planned CLI
 

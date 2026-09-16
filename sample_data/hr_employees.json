@@ -1,0 +1,85 @@
+{
+  "schema_id": "HR-001",
+  "system": "Staff HR records",
+  "organisation": "Example Healthcare Trust",
+  "schema_version": "1.0",
+  "notes": "Worked PASS example. Aligns with ropa-builder sample activity PA-001 (staff payroll).",
+  "entities": [
+    {
+      "name": "employees",
+      "description": "Core employment and payroll record",
+      "fields": [
+        {
+          "name": "employee_id",
+          "personal_data": false,
+          "category": "internal identifier",
+          "purpose": "Primary key",
+          "retention_period": "",
+          "trigger": "",
+          "disposal": "",
+          "deletion_job": null,
+          "erasure_supported": null,
+          "art89_exception": false,
+          "ropa_activity_id": null,
+          "notes": "Not personal data"
+        },
+        {
+          "name": "full_name",
+          "personal_data": true,
+          "category": "identity",
+          "purpose": "Identify the employee for payroll and HR",
+          "retention_period": "7 years after end of employment",
+          "trigger": "end of employment",
+          "disposal": "erase",
+          "deletion_job": true,
+          "erasure_supported": true,
+          "art89_exception": false,
+          "ropa_activity_id": "PA-001",
+          "notes": ""
+        },
+        {
+          "name": "ni_number",
+          "personal_data": true,
+          "category": "identifier",
+          "purpose": "HMRC reporting",
+          "retention_period": "7 years after end of employment",
+          "trigger": "end of employment",
+          "disposal": "erase",
+          "deletion_job": true,
+          "erasure_supported": true,
+          "art89_exception": false,
+          "ropa_activity_id": "PA-001",
+          "notes": ""
+        },
+        {
+          "name": "bank_details",
+          "personal_data": true,
+          "category": "financial",
+          "purpose": "Pay salary",
+          "retention_period": "7 years after end of employment",
+          "trigger": "end of employment",
+          "disposal": "erase",
+          "deletion_job": true,
+          "erasure_supported": true,
+          "art89_exception": false,
+          "ropa_activity_id": "PA-001",
+          "notes": ""
+        },
+        {
+          "name": "emergency_contact",
+          "personal_data": true,
+          "category": "contact",
+          "purpose": "Reach a nominated person during employment only",
+          "retention_period": "until employment ends",
+          "trigger": "end of employment",
+          "disposal": "erase",
+          "deletion_job": true,
+          "erasure_supported": true,
+          "art89_exception": false,
+          "ropa_activity_id": "PA-001",
+          "notes": "ICO storage-limitation example: delete emergency contacts when the person leaves"
+        }
+      ]
+    }
+  ]
+}
