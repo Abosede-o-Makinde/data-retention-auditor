@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Annotated, Iterator
+from collections.abc import Iterator
+from typing import Annotated
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 
 SCHEMA_ID_PATTERN = r"^[A-Za-z0-9_-]{1,50}$"
 
@@ -43,13 +44,6 @@ class SchemaInventory(BaseModel):
     schema_version: str = "1.0"
     notes: str = ""
     entities: list[Entity] = Field(min_length=1)
-
-    @field_validator("schema_id")
-    @classmethod
-    def reject_path_traversal(cls, value: str) -> str:
-        if ".." in value or "/" in value or "\\" in value:
-            raise ValueError("schema_id must not contain path separators")
-        return value
 
     def iter_personal_fields(self) -> Iterator[tuple[Entity, FieldRecord]]:
         for entity in self.entities:

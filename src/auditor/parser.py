@@ -15,17 +15,12 @@ class SchemaParseError(ValueError):
 
 
 def load_inventory(path: Path) -> SchemaInventory:
-    """Parse `path` into a SchemaInventory.
-
-    Rejects missing files, invalid JSON, non-objects, and payloads that do
-    not match the inventory model.
-    """
+    """Parse `path` into a SchemaInventory."""
     if not path.is_file():
         raise SchemaParseError(f"Schema file not found: {path}")
 
     try:
-        with path.open(encoding="utf-8") as handle:
-            payload = json.load(handle)
+        payload = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         raise SchemaParseError(f"Invalid JSON in {path}: {exc}") from exc
 

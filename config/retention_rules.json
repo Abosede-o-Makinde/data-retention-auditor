@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0",
+  "articles_label": "UK GDPR",
+  "vague_exact": ["tbd", "tbc", "n/a", "na", "unknown", "none", "nil"],
+  "vague_phrases": [
+    "as per policy",
+    "per policy",
+    "see policy",
+    "see retention policy",
+    "in accordance with the retention policy",
+    "according to policy",
+    "as per the policy"
+  ],
+  "indefinite_phrases": [
+    "indefinite",
+    "indefinitely",
+    "forever",
+    "unlimited",
+    "no limit",
+    "permanently"
+  ],
+  "rules": [
+    {
+      "id": "RET-01",
+      "severity": "FAIL",
+      "weight": 20,
+      "articles": ["5(1)(e)", "30(1)(f)"],
+      "title": "Missing retention period",
+      "remediation": "Declare a retention period with a trigger event for this personal-data field, then record it on the ROPA."
+    },
+    {
+      "id": "RET-02",
+      "severity": "FAIL",
+      "weight": 20,
+      "articles": ["5(1)(e)", "30(1)(f)"],
+      "title": "Vague retention period",
+      "remediation": "Replace pointers such as 'as per policy' with a concrete period and trigger (for example '30 days after last contact')."
+    },
+    {
+      "id": "RET-03",
+      "severity": "PARTIAL",
+      "weight": 8,
+      "articles": ["5(1)(e)"],
+      "title": "No trigger event",
+      "remediation": "State when the clock starts (end of employment, last appointment, account closure), not only a duration."
+    },
+    {
+      "id": "RET-04",
+      "severity": "PARTIAL",
+      "weight": 10,
+      "articles": ["5(1)(e)"],
+      "title": "Retention not enforced",
+      "remediation": "Add an automated deletion or anonymisation job so the declared period is kept in practice."
+    },
+    {
+      "id": "RET-05",
+      "severity": "PARTIAL",
+      "weight": 8,
+      "articles": ["5(1)(e)"],
+      "title": "No disposal action",
+      "remediation": "Record whether the field is erased or anonymised when the period ends."
+    },
+    {
+      "id": "RET-06",
+      "severity": "FAIL",
+      "weight": 15,
+      "articles": ["17"],
+      "title": "Erasure not supported",
+      "remediation": "Confirm the field can be deleted or put beyond use so Article 17 requests can be met."
+    },
+    {
+      "id": "RET-07",
+      "severity": "FAIL",
+      "weight": 20,
+      "articles": ["5(1)(e)"],
+      "title": "Indefinite retention without Article 89 exception",
+      "remediation": "Set a finite period, or flag art89_exception only where the sole purpose is archiving, research, or statistics with safeguards."
+    },
+    {
+      "id": "RET-08",
+      "severity": "PARTIAL",
+      "weight": 5,
+      "articles": ["30"],
+      "title": "No ROPA activity link",
+      "remediation": "Map the field to an Article 30 processing activity id so the schema and the ROPA stay aligned."
+    }
+  ]
+}
