@@ -12,29 +12,22 @@ from src.auditor.parser import SchemaParseError, load_inventory
 from src.models.schema import SchemaInventory
 
 
+def _field_named(inventory: SchemaInventory, entity_name: str, field_name: str):
+    for entity, field in inventory.iter_personal_fields():
+        if entity.name == entity_name and field.name == field_name:
+            return field
+    raise AssertionError(f"missing {entity_name}.{field_name}")
+
+
 def test_load_crm_sample(crm_inventory: SchemaInventory) -> None:
     assert crm_inventory.schema_id == "CRM-001"
     assert crm_inventory.system == "Harbour Sales CRM"
     assert crm_inventory.personal_field_count() == 3
-    emails = [
-        field
-        for entity, field in crm_inventory.iter_personal_fields()
-        if entity.name == "leads" and field.name == "email"
-    ]
-    assert emails[0].retention_period == ""
-    notes = [
-        field
-        for entity, field in crm_inventory.iter_personal_fields()
-        if field.name == "source_notes"
-    ]
-    assert notes[0].retention_period == "as per policy"
-    replay = [
-        field
-        for entity, field in crm_inventory.iter_personal_fields()
-        if entity.name == "session_replays"
-    ]
-    assert replay[0].retention_period == "30 days"
-    assert replay[0].deletion_job is False
+    assert _field_named(crm_inventory, "leads", "email").retention_period == ""
+    assert _field_named(crm_inventory, "leads", "source_notes").retention_period == "as per policy"
+    replay = _field_named(crm_inventory, "session_replays", "blob")
+    assert replay.retention_period == "30 days"
+    assert replay.deletion_job is False
 
 
 def test_load_hr_sample(hr_inventory: SchemaInventory) -> None:
@@ -43,11 +36,7 @@ def test_load_hr_sample(hr_inventory: SchemaInventory) -> None:
     assert hr_inventory.personal_field_count() == 4
     names = {field.name for _, field in hr_inventory.iter_personal_fields()}
     assert names == {"full_name", "ni_number", "bank_details", "emergency_contact"}
-    contact = next(
-        field
-        for _, field in hr_inventory.iter_personal_fields()
-        if field.name == "emergency_contact"
-    )
+    contact = _field_named(hr_inventory, "employees", "emergency_contact")
     assert contact.retention_period == "until employment ends"
     assert contact.trigger == "end of employment"
     assert contact.disposal == "erase"
@@ -109,7 +98,7 @@ def test_empty_entities_raises(tmp_path: Path) -> None:
         load_inventory(path)
 
 
-def test_schema_id_rejects_path_separators() -> None:
+def test_schema_id_rejects_invalid_characters() -> None:
     with pytest.raises(ValidationError):
         SchemaInventory.model_validate(
             {
