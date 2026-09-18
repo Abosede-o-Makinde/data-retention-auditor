@@ -42,6 +42,21 @@ class Finding:
     def location(self) -> str:
         return f"{self.entity}.{self.field}"
 
+    @property
+    def articles_label(self) -> str:
+        return ", ".join(f"Art. {a}" for a in self.articles)
+
+    def to_dict(self) -> dict:
+        return {
+            "rule_id": self.rule_id,
+            "location": self.location,
+            "severity": self.severity,
+            "title": self.title,
+            "articles": list(self.articles),
+            "weight": self.weight,
+            "remediation": self.remediation,
+        }
+
 
 @dataclass
 class AuditResult:
@@ -63,6 +78,10 @@ def band_for(score: float | None, findings: list[Finding]) -> str:
     if findings:
         return "PARTIAL"
     return "PASS"
+
+
+def format_score(score: float | None) -> str:
+    return "n/a" if score is None else f"{score}/100"
 
 
 def _normalise(value: str | None) -> str:
