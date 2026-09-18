@@ -1,0 +1,11 @@
+{
+  "schema_id": "HR-001",
+  "system": "Staff HR records",
+  "organisation": "Example Healthcare Trust",
+  "score": 100.0,
+  "band": "PASS",
+  "personal_fields": 4,
+  "finding_count": 0,
+  "findings": [],
+  "disclaimer": "Decision-support only. Not legal advice."
+}

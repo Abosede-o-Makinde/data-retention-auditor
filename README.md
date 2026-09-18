@@ -6,17 +6,25 @@
 
 Scans data schemas for missing retention periods under UK GDPR Articles 5(1)(e), 17 and 30.
 
-This repository is a scaffold. The scanner and reports are not implemented yet.
-
 JSON schema inventories live in `sample_data/`:
 
 - `crm_leads.json` — sales CRM with missing and vague retention metadata
 - `hr_employees.json` — HR records with period, trigger, disposal, and a ROPA link
 
-## Planned CLI
+## Installation
 
 ```bash
 pip install -r requirements.txt
 python main.py --help
 python main.py --version
 ```
+
+## Commands
+
+```bash
+python main.py --mode scan --input sample_data/crm_leads.json
+python main.py --mode score --input sample_data/hr_employees.json
+python main.py --mode report --input sample_data/crm_leads.json --output outputs/
+```
+
+`scan` prints findings, `score` prints the band only, `report` also writes Markdown, JSON, and PDF. Sample artefacts are in `sample_outputs/`.

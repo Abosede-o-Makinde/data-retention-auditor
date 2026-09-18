@@ -1,0 +1,146 @@
+{
+  "schema_id": "CRM-001",
+  "system": "Harbour Sales CRM",
+  "organisation": "Harbour Advisory LLP",
+  "score": 0.0,
+  "band": "FAIL",
+  "personal_fields": 3,
+  "finding_count": 12,
+  "findings": [
+    {
+      "rule_id": "RET-01",
+      "location": "leads.email",
+      "severity": "FAIL",
+      "title": "Missing retention period",
+      "articles": [
+        "5(1)(e)",
+        "30(1)(f)"
+      ],
+      "weight": 20,
+      "remediation": "Declare a retention period with a trigger event for this personal-data field, then record it on the ROPA."
+    },
+    {
+      "rule_id": "RET-05",
+      "location": "leads.email",
+      "severity": "PARTIAL",
+      "title": "No disposal action",
+      "articles": [
+        "5(1)(e)"
+      ],
+      "weight": 8,
+      "remediation": "Record whether the field is erased or anonymised when the period ends."
+    },
+    {
+      "rule_id": "RET-06",
+      "location": "leads.email",
+      "severity": "FAIL",
+      "title": "Erasure not supported",
+      "articles": [
+        "17"
+      ],
+      "weight": 15,
+      "remediation": "Confirm the field can be deleted or put beyond use so Article 17 requests can be met."
+    },
+    {
+      "rule_id": "RET-08",
+      "location": "leads.email",
+      "severity": "PARTIAL",
+      "title": "No ROPA activity link",
+      "articles": [
+        "30"
+      ],
+      "weight": 5,
+      "remediation": "Map the field to an Article 30 processing activity id so the schema and the ROPA stay aligned."
+    },
+    {
+      "rule_id": "RET-02",
+      "location": "leads.source_notes",
+      "severity": "FAIL",
+      "title": "Vague retention period",
+      "articles": [
+        "5(1)(e)",
+        "30(1)(f)"
+      ],
+      "weight": 20,
+      "remediation": "Replace pointers such as 'as per policy' with a concrete period and trigger (for example '30 days after last contact')."
+    },
+    {
+      "rule_id": "RET-05",
+      "location": "leads.source_notes",
+      "severity": "PARTIAL",
+      "title": "No disposal action",
+      "articles": [
+        "5(1)(e)"
+      ],
+      "weight": 8,
+      "remediation": "Record whether the field is erased or anonymised when the period ends."
+    },
+    {
+      "rule_id": "RET-06",
+      "location": "leads.source_notes",
+      "severity": "FAIL",
+      "title": "Erasure not supported",
+      "articles": [
+        "17"
+      ],
+      "weight": 15,
+      "remediation": "Confirm the field can be deleted or put beyond use so Article 17 requests can be met."
+    },
+    {
+      "rule_id": "RET-08",
+      "location": "leads.source_notes",
+      "severity": "PARTIAL",
+      "title": "No ROPA activity link",
+      "articles": [
+        "30"
+      ],
+      "weight": 5,
+      "remediation": "Map the field to an Article 30 processing activity id so the schema and the ROPA stay aligned."
+    },
+    {
+      "rule_id": "RET-03",
+      "location": "session_replays.blob",
+      "severity": "PARTIAL",
+      "title": "No trigger event",
+      "articles": [
+        "5(1)(e)"
+      ],
+      "weight": 8,
+      "remediation": "State when the clock starts (end of employment, last appointment, account closure), not only a duration."
+    },
+    {
+      "rule_id": "RET-04",
+      "location": "session_replays.blob",
+      "severity": "PARTIAL",
+      "title": "Retention not enforced",
+      "articles": [
+        "5(1)(e)"
+      ],
+      "weight": 10,
+      "remediation": "Add an automated deletion or anonymisation job so the declared period is kept in practice."
+    },
+    {
+      "rule_id": "RET-06",
+      "location": "session_replays.blob",
+      "severity": "FAIL",
+      "title": "Erasure not supported",
+      "articles": [
+        "17"
+      ],
+      "weight": 15,
+      "remediation": "Confirm the field can be deleted or put beyond use so Article 17 requests can be met."
+    },
+    {
+      "rule_id": "RET-08",
+      "location": "session_replays.blob",
+      "severity": "PARTIAL",
+      "title": "No ROPA activity link",
+      "articles": [
+        "30"
+      ],
+      "weight": 5,
+      "remediation": "Map the field to an Article 30 processing activity id so the schema and the ROPA stay aligned."
+    }
+  ],
+  "disclaimer": "Decision-support only. Not legal advice."
+}
