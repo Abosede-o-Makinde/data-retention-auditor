@@ -102,15 +102,17 @@ class RetentionAuditor:
 
     def __init__(self, config_path: Path | None = None) -> None:
         payload = _load_rules_payload(config_path or DEFAULT_RULES_PATH)
-        self.vague_exact = {item.lower() for item in payload["vague_exact"]}
-        self.vague_phrases = tuple(item.lower() for item in payload["vague_phrases"])
-        self.indefinite_phrases = tuple(item.lower() for item in payload["indefinite_phrases"])
+        self.vague_exact = payload["vague_exact"]
+        self.vague_phrases = payload["vague_phrases"]
+        self.indefinite_phrases = payload["indefinite_phrases"]
         self.rules = {spec.id: spec for spec in payload["parsed_rules"]}
 
     def audit(self, inventory: SchemaInventory) -> AuditResult:
         personal_fields = list(inventory.iter_personal_fields())
         if not personal_fields:
-            return AuditResult(inventory=inventory, findings=[], score=None, band="PARTIAL")
+            return AuditResult(
+                inventory=inventory, findings=[], score=None, band=band_for(None, [])
+            )
 
         findings: list[Finding] = []
         for entity, field in personal_fields:
@@ -177,20 +179,33 @@ def _load_rules_payload(path: Path) -> dict:
         raise RulesConfigError(f"Rules file not found: {path}")
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
+    except UnicodeDecodeError as exc:
+        raise RulesConfigError(f"Could not decode {path} as UTF-8: {exc}") from exc
     except json.JSONDecodeError as exc:
         raise RulesConfigError(f"Invalid JSON in {path}: {exc}") from exc
     if not isinstance(payload, dict):
         raise RulesConfigError(f"{path} must contain a rules object")
 
+    rules_raw = payload.get("rules")
+    if not isinstance(rules_raw, list):
+        raise RulesConfigError(f"{path} must contain a JSON array under 'rules'")
+
     try:
-        rules = [_rule_spec(item) for item in payload["rules"]]
+        vague_exact = payload["vague_exact"]
+        vague_phrases = payload["vague_phrases"]
+        indefinite_phrases = payload["indefinite_phrases"]
+        if not all(
+            isinstance(value, list) for value in (vague_exact, vague_phrases, indefinite_phrases)
+        ):
+            raise TypeError("vague_exact, vague_phrases, and indefinite_phrases must be arrays")
+        rules = [_rule_spec(item) for item in rules_raw]
         parsed = {
-            "vague_exact": list(payload["vague_exact"]),
-            "vague_phrases": list(payload["vague_phrases"]),
-            "indefinite_phrases": list(payload["indefinite_phrases"]),
+            "vague_exact": {item.lower() for item in vague_exact},
+            "vague_phrases": tuple(item.lower() for item in vague_phrases),
+            "indefinite_phrases": tuple(item.lower() for item in indefinite_phrases),
             "parsed_rules": rules,
         }
-    except (KeyError, TypeError, ValueError) as exc:
+    except (KeyError, TypeError, ValueError, AttributeError) as exc:
         raise RulesConfigError(f"Invalid rules config in {path}: {exc}") from exc
 
     found = {spec.id for spec in rules}

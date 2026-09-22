@@ -21,6 +21,8 @@ def load_inventory(path: Path) -> SchemaInventory:
 
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
+    except UnicodeDecodeError as exc:
+        raise SchemaParseError(f"Could not decode {path} as UTF-8: {exc}") from exc
     except json.JSONDecodeError as exc:
         raise SchemaParseError(f"Invalid JSON in {path}: {exc}") from exc
 
