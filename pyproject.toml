@@ -1,9 +1,19 @@
 [project]
 name = "data-retention-auditor"
-version = "0.1.0"
+version = "1.0.0"
 description = "Scans data schemas for missing retention periods under UK GDPR Article 5(1)(e)"
 requires-python = ">=3.11"
 license = { text = "MIT" }
+keywords = [
+    "gdpr",
+    "data-retention",
+    "article-5",
+    "compliance",
+    "python",
+    "data-protection",
+    "information-governance",
+    "uk-gdpr",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
