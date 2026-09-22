@@ -68,6 +68,13 @@ def test_invalid_json_raises(tmp_path: Path) -> None:
         load_inventory(broken)
 
 
+def test_non_utf8_file_raises(tmp_path: Path) -> None:
+    path = tmp_path / "latin.json"
+    path.write_bytes(b'{"schema_id": "\xff"}')
+    with pytest.raises(SchemaParseError, match="UTF-8"):
+        load_inventory(path)
+
+
 def test_json_array_raises(tmp_path: Path) -> None:
     path = tmp_path / "array.json"
     path.write_text("[]", encoding="utf-8")

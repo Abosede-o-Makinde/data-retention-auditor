@@ -192,10 +192,40 @@ def test_invalid_rules_json_raises(tmp_path: Path) -> None:
         RetentionAuditor(config_path=path)
 
 
+def test_non_utf8_rules_file_raises(tmp_path: Path) -> None:
+    path = tmp_path / "rules.json"
+    path.write_bytes(b"\xff\xfe")
+    with pytest.raises(RulesConfigError, match="UTF-8"):
+        RetentionAuditor(config_path=path)
+
+
+def test_rules_root_must_be_object(tmp_path: Path) -> None:
+    path = tmp_path / "rules.json"
+    path.write_text("[]", encoding="utf-8")
+    with pytest.raises(RulesConfigError, match="rules object"):
+        RetentionAuditor(config_path=path)
+
+
 def test_rules_payload_must_contain_rules(tmp_path: Path) -> None:
     path = tmp_path / "rules.json"
     path.write_text(json.dumps({"schema_version": "1.0"}), encoding="utf-8")
-    with pytest.raises(RulesConfigError, match="Invalid rules config"):
+    with pytest.raises(RulesConfigError, match="JSON array under 'rules'"):
+        RetentionAuditor(config_path=path)
+
+
+def test_rules_must_be_a_list(tmp_path: Path) -> None:
+    path = tmp_path / "rules.json"
+    path.write_text(json.dumps({"rules": {"id": "RET-01"}}), encoding="utf-8")
+    with pytest.raises(RulesConfigError, match="JSON array under 'rules'"):
+        RetentionAuditor(config_path=path)
+
+
+def test_phrase_lists_must_be_arrays(tmp_path: Path) -> None:
+    payload = json.loads(DEFAULT_RULES_PATH.read_text(encoding="utf-8"))
+    payload["vague_exact"] = "n/a"
+    path = tmp_path / "rules.json"
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    with pytest.raises(RulesConfigError, match="must be arrays"):
         RetentionAuditor(config_path=path)
 
 
